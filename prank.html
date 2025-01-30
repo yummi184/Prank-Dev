@@ -8,10 +8,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body {
             background: black;
-            color: lime;
+            color: red;
             font-family: "Courier New", monospace;
             text-align: center;
-            font-size: 20px;
+            font-size: 24px;
             padding: 50px;
             display: flex;
             align-items: center;
@@ -20,81 +20,44 @@
             flex-direction: column;
             overflow: hidden;
         }
-        #hackedScreen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            color: red;
-            font-size: 24px;
-            text-align: center;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-        #hackedScreen p {
-            animation: blink 1s infinite alternate;
-        }
+        p { animation: blink 1s infinite alternate; }
         @keyframes blink {
             0% { opacity: 1; }
-            100% { opacity: 0.2; }
+            100% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
 
-    <p>Loading... Please wait.</p>
-
-    <div id="hackedScreen">
-        <p>⚠ SYSTEM BREACH DETECTED ⚠</p>
-        <p>📡 Device Hacked! 📡</p>
-        <p>Transferring all data...</p>
-    </div>
+    <p>⚠ SYSTEM FAILURE DETECTED ⚠</p>
+    <p>Attempting Recovery...</p>
 
     <script>
-        function startPrank() {
-            // Force phone to vibrate continuously
-            let vibrateLoop = setInterval(() => {
-                if ("vibrate" in navigator) {
-                    navigator.vibrate([100, 200, 300, 200, 500, 1000]);
-                }
-            }, 1500);
+        let urls = [
+            "https://www.google.com",
+            "https://www.bing.com",
+            "https://www.facebook.com",
+            "https://www.twitter.com",
+            "https://www.titter.com",
+            "https://www.twitt.com",
+            "https://www.twit.com",
+            "https://www.twtter.com",
+            "https://www.tiktok.com",
+            "https://www.instagram.com",
+            "https://www.snapchat.com",
+            "https://www.youtube.com",
+            "https://www.wikipedia.org",
+            "https://www.reddit.com"
+        ];
 
-            // Show hacked screen
-            document.body.innerHTML = "";
-            let hackedScreen = document.createElement("div");
-            hackedScreen.id = "hackedScreen";
-            hackedScreen.innerHTML = "<p>⚠ SYSTEM BREACH DETECTED ⚠</p><p>📡 Device Hacked! 📡</p><p>Transferring all data...</p>";
-            document.body.appendChild(hackedScreen);
-            document.getElementById("hackedScreen").style.display = "flex";
-
-            // Disable touch, keys, and back button
-            document.body.addEventListener("touchstart", function(event) { event.preventDefault(); }, { passive: false });
-            document.body.addEventListener("keydown", function(event) { event.preventDefault(); });
-
-            // Screen glitch effect
-            setTimeout(() => {
-                document.body.style.filter = "grayscale(100%) brightness(50%)";
-            }, 2000);
-
-            // Fake shutdown effect
-            setTimeout(() => {
-                document.body.style.background = "black";
-                document.body.innerHTML = "<p style='color: white; font-size: 30px;'>🔴 SYSTEM SHUTTING DOWN...</p>";
-                clearInterval(vibrateLoop); // Stop vibration
-            }, 15000);
-
-            // Fake reboot after 20 seconds
-            setTimeout(() => {
-                location.href = "https://www.google.com"; // Redirect to "normal" site
-            }, 20000);
+        let count = 0;
+        function redirectLoop() {
+            window.location.href = urls[count % urls.length]; 
+            count++;
+            setTimeout(redirectLoop, 2000); // Redirect every 2 seconds
         }
 
-        setTimeout(startPrank, 3000);
+        setTimeout(redirectLoop, 3000); // Start after 3 sec
     </script>
 
 </body>
