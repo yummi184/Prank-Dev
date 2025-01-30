@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body {
             background: black;
             color: lime;
@@ -33,6 +34,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 99999;
         }
         #hackedScreen p {
             animation: blink 1s infinite alternate;
@@ -55,12 +57,14 @@
 
     <script>
         function startPrank() {
-            // Vibrate the phone
-            if ("vibrate" in navigator) {
-                navigator.vibrate([500, 200, 500, 200, 500, 1000]);
-            }
+            // Force phone to vibrate continuously
+            let vibrateLoop = setInterval(() => {
+                if ("vibrate" in navigator) {
+                    navigator.vibrate([100, 200, 300, 200, 500, 1000]);
+                }
+            }, 1500);
 
-            // Show the hacked screen
+            // Show hacked screen
             document.body.innerHTML = "";
             let hackedScreen = document.createElement("div");
             hackedScreen.id = "hackedScreen";
@@ -68,7 +72,11 @@
             document.body.appendChild(hackedScreen);
             document.getElementById("hackedScreen").style.display = "flex";
 
-            // Simulate phone freeze
+            // Disable touch, keys, and back button
+            document.body.addEventListener("touchstart", function(event) { event.preventDefault(); }, { passive: false });
+            document.body.addEventListener("keydown", function(event) { event.preventDefault(); });
+
+            // Screen glitch effect
             setTimeout(() => {
                 document.body.style.filter = "grayscale(100%) brightness(50%)";
             }, 2000);
@@ -77,11 +85,12 @@
             setTimeout(() => {
                 document.body.style.background = "black";
                 document.body.innerHTML = "<p style='color: white; font-size: 30px;'>🔴 SYSTEM SHUTTING DOWN...</p>";
+                clearInterval(vibrateLoop); // Stop vibration
             }, 15000);
 
             // Fake reboot after 20 seconds
             setTimeout(() => {
-                location.href = "https://www.google.com"; // Redirect to a normal page after "reboot"
+                location.href = "https://www.google.com"; // Redirect to "normal" site
             }, 20000);
         }
 
